@@ -77,16 +77,16 @@ exports.handler = async (event) => {
         // Preparar datos para tabla_contacto - CON LÍMITES EXACTOS según tu tabla
         const datosTabla = {
             company_name: data.companyName.trim().substring(0, 255),
-            company_rut: data.companyRut.trim().substring(0, 28), // ← 28 caracteres máximo
-            employee_count: (data.employeeCount || '').substring(0, 58), // ← 58 caracteres máximo
-            industry: (data.industry || '').substring(0, 188), // ← 188 caracteres máximo
+            company_rut: data.companyRut.trim().substring(0, 20), // ← 20 caracteres máximo
+            employee_count: (data.employeeCount || '').substring(0, 50), // ← 50 caracteres máximo
+            industry: (data.industry || '').substring(0, 100), // ← 100 caracteres máximo
             contact_name: data.contactName.trim().substring(0, 255),
             contact_phone: data.contactPhone.trim().substring(0, 50),
             contact_email: data.contactEmail.trim().toLowerCase().substring(0, 255),
-            current_system: data.currentSystem ? data.currentSystem.substring(0, 188) : null, // ← 188 caracteres máximo
+            current_system: data.currentSystem ? data.currentSystem.substring(0, 100) : null, // ← 100 caracteres máximo
             needs: data.needs.trim(),
-            additions_info: data.additionalInfo ? data.additionalInfo.trim() : null,
-            status: 'pending'.substring(0, 29) // ← 29 caracteres máximo
+            additional_info: data.additionalInfo ? data.additionalInfo.trim() : null, // ← NOMBRE CORRECTO: additional_info
+            status: 'pending' // ← No necesita substring ya que "pending" tiene menos de 20 caracteres
         };
 
         console.log('📦 Datos preparados para Neon:', JSON.stringify(datosTabla, null, 2));
