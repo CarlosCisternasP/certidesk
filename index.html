@@ -1119,17 +1119,17 @@
         <div class="container">
             <div class="pricing-header">
                 <h2 class="section-title">Planes que se Adaptan a tu Empresa</h2>
-                <p class="section-subtitle mx-auto">Elige el plan perfecto para tus necesidades. Todos incluyen prueba gratuita de 30 días.</p>
+                <p class="section-subtitle mx-auto">Elige el plan perfecto para tus necesidades.</p>
             </div>
 
             <!-- Trial Banner -->
             <div class="cta" style="margin-bottom: 4rem; border-radius: var(--border-radius);">
                 <div class="cta-content">
-                    <h2 class="section-title">🚀 Comienza tu Prueba Gratuita</h2>
-                    <p class="section-subtitle mx-auto">30 días completos para explorar todas las funcionalidades sin compromiso</p>
+                    <h2 class="section-title">🚀 Solicita tu Prueba </h2>
+                    <p class="section-subtitle mx-auto">15 días completos para explorar todas las funcionalidades sin compromiso</p>
                     <a href="#" class="btn start-trial-btn">
                         <i class="fas fa-rocket"></i>
-                        Comenzar Prueba Gratuita
+                        Comenzar Prueba 
                     </a>
                 </div>
             </div>
@@ -1398,7 +1398,7 @@
                 <p class="section-subtitle mx-auto">Únete a cientos de empresas que ya confían en CERTIDESK para optimizar sus procesos y mejorar el servicio al cliente.</p>
                 <a href="#" class="btn start-trial-btn">
                     <i class="fas fa-calendar-check"></i>
-                    Comenzar Prueba Gratuita
+                    Comenzar Prueba 
                 </a>
             </div>
         </div>
@@ -1456,7 +1456,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2023 CERTIDESK. Todos los derechos reservados. Diseñado con ❤️ para empresas innovadoras.</p>
+                <p>&copy; 2023 CERTIDESK. Todos los derechos reservados. Diseñado para empresas innovadoras.</p>
             </div>
         </div>
     </footer>
@@ -1469,8 +1469,8 @@
             </button>
             
             <div class="modal-header">
-                <h2 class="modal-title">Comienza tu Prueba Gratuita</h2>
-                <p class="modal-subtitle">30 días completos para explorar CERTIDESK sin compromiso</p>
+                <h2 class="modal-title">Solicita tu Prueba Gratuita</h2>
+                <p class="modal-subtitle">15 días completos para explorar CERTIDESK sin compromiso</p>
             </div>
 
             <form id="trialForm">
@@ -1573,8 +1573,7 @@
             </form>
         </div>
     </div>
-
-    <script>
+<script>
         // Modal functionality
         const modal = document.getElementById('trialModal');
         const modalClose = document.getElementById('modalClose');
@@ -1612,8 +1611,8 @@
             }
         });
 
-        // Form submission
-        trialForm.addEventListener('submit', (e) => {
+        // Form submission - ACTUALIZADO para guardar en tabla_contacto
+        trialForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             // Basic form validation
@@ -1629,29 +1628,55 @@
                 }
             });
 
-            if (isValid) {
-                // Here you would typically send the form data to your server
+            if (!isValid) {
+                alert('Por favor, completa todos los campos obligatorios.');
+                return;
+            }
+
+            // Mostrar estado de envío
+            const submitBtn = trialForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            submitBtn.disabled = true;
+
+            try {
+                // Preparar datos del formulario
                 const formData = new FormData(trialForm);
                 const data = Object.fromEntries(formData);
                 
-                console.log('Form data:', data);
-                
-                // Show success message
-                alert('¡Gracias por tu solicitud! Nos contactaremos dentro de 24 horas para activar tu prueba gratuita.');
-                
-                // Close modal and reset form
-                modal.classList.remove('active');
-                document.body.style.overflow = 'auto';
-                trialForm.reset();
-                
-                // Here you would typically send the data to your backend
-                // fetch('/api/trial-request', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(data)
-                // });
-            } else {
-                alert('Por favor, completa todos los campos obligatorios.');
+                console.log('Enviando datos a tabla_contacto:', data);
+
+                // Enviar a Netlify Function
+                const response = await fetch('/.netlify/functions/guardar-contacto', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert('¡Gracias por tu solicitud! Nos contactaremos dentro de 48 horas para activar tu prueba gratuita.');
+                    
+                    // Cerrar modal y resetear formulario
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                    trialForm.reset();
+                    
+                    console.log('Solicitud guardada en tabla_contacto:', result.data);
+                } else {
+                    throw new Error(result.error || 'Error al enviar la solicitud');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al enviar la solicitud: ' + error.message + '\nPor favor, intenta nuevamente.');
+            } finally {
+                // Restaurar botón
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
         });
 
