@@ -1,9 +1,11 @@
 // netlify/functions/guardar-contacto.js
 exports.handler = async (event) => {
+    console.log('Función guardar-contacto ejecutándose');
+    
     // Configurar CORS
     const headers = {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Content-Type': 'application/json'
     };
@@ -30,9 +32,17 @@ exports.handler = async (event) => {
     }
 
     try {
-        const data = JSON.parse(event.body);
-        console.log('Datos recibidos:', data);
+        console.log('Procesando solicitud...');
         
+        const data = JSON.parse(event.body);
+        console.log('Datos recibidos:', JSON.stringify(data, null, 2));
+        
+        // Validar que tenemos la API Key
+        if (!process.env.NEON_API_KEY) {
+            console.error('NEON_API_KEY no está configurada');
+            throw new Error('Configuración del servidor incompleta');
+        }
+
         // Validar campos requeridos
         const camposRequeridos = ['companyName', 'companyRut', 'contactName', 'contactEmail', 'needs'];
         const camposFaltantes = camposRequeridos.filter(campo => !data[campo]?.trim());
@@ -75,10 +85,14 @@ exports.handler = async (event) => {
             additional_info: data.additionalInfo ? data.additionalInfo.trim() : null
         };
 
-        console.log('Enviando a Neon:', datosTabla);
+        console.log('Datos preparados para Neon:', JSON.stringify(datosTabla, null, 2));
+
+        // URL de Neon REST API - verifica que esta URL sea correcta
+        const neonUrl = 'https://ep-frosty-unit-a42qx3oz.apirest.us-east-1.aws.neon.tech/rest/v1/tabla_contacto';
+        console.log('Enviando a:', neonUrl);
 
         // Enviar a Neon REST API
-        const neonResponse = await fetch('https://ep-frosty-unit-a42qx3oz.apirest.us-east-1.aws.neon.tech/neondb/rest/v1/tabla_contacto', {
+        const neonResponse = await fetch(neonUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,14 +103,32 @@ exports.handler = async (event) => {
             body: JSON.stringify(datosTabla)
         });
 
+        console.log('Status de respuesta Neon:', neonResponse.status);
+        console.log('Headers de respuesta:', JSON.stringify(neonResponse.headers, null, 2));
+
         if (!neonResponse.ok) {
             const errorTexto = await neonResponse.text();
-            console.error('Error de Neon:', errorTexto);
-            throw new Error(`Error en Neon API: ${neonResponse.status} ${neonResponse.statusText}`);
+            console.error('Error detallado de Neon:', {
+                status: neonResponse.status,
+                statusText: neonResponse.statusText,
+                error: errorTexto
+            });
+            
+            let mensajeError = `Error ${neonResponse.status}: ${neonResponse.statusText}`;
+            
+            if (neonResponse.status === 401) {
+                mensajeError = 'Error de autenticación con la base de datos';
+            } else if (neonResponse.status === 404) {
+                mensajeError = 'Tabla no encontrada en la base de datos';
+            } else if (neonResponse.status === 500) {
+                mensajeError = 'Error interno del servidor de base de datos';
+            }
+            
+            throw new Error(mensajeError);
         }
 
         const resultado = await neonResponse.json();
-        console.log('Respuesta de Neon:', resultado);
+        console.log('Respuesta exitosa de Neon:', JSON.stringify(resultado, null, 2));
 
         return {
             statusCode: 201,
@@ -104,25 +136,26 @@ exports.handler = async (event) => {
             body: JSON.stringify({
                 success: true,
                 message: 'Solicitud recibida correctamente. Nos contactaremos dentro de 24 horas.',
-                data: resultado[0] // Neon retorna array con el registro insertado
+                data: resultado[0]
             })
         };
 
     } catch (error) {
-        console.error('Error en la función:', error);
-        
-        let mensajeError = 'Error interno del servidor';
-        
-        if (error.message.includes('Error en Neon API')) {
-            mensajeError = 'Error al conectar con la base de datos';
-        }
+        console.error('Error completo en la función:', {
+            message: error.message,
+            stack: error.stack,
+            environment: {
+                hasNeonApiKey: !!process.env.NEON_API_KEY,
+                neonApiKeyLength: process.env.NEON_API_KEY ? process.env.NEON_API_KEY.length : 0
+            }
+        });
 
         return {
             statusCode: 500,
             headers,
             body: JSON.stringify({ 
                 success: false,
-                error: mensajeError 
+                error: error.message || 'Error interno del servidor'
             })
         };
     }
