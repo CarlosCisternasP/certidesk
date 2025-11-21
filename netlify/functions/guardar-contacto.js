@@ -71,7 +71,7 @@ exports.handler = async (event) => {
             };
         }
 
-        // Preparar datos para tabla_contacto - USANDO EL NOMBRE CORRECTO DE LA COLUMNA
+        // Preparar datos para tabla_contacto - USANDO EL NOMBRE REAL DE LA COLUMNA (additions_info)
         const datosTabla = {
             company_name: data.companyName.trim(),
             company_rut: data.companyRut.trim(),
@@ -82,13 +82,13 @@ exports.handler = async (event) => {
             contact_email: data.contactEmail.trim().toLowerCase(),
             current_system: data.currentSystem || null,
             needs: data.needs.trim(),
-            additions_info: data.additionalInfo ? data.additionalInfo.trim() : null, // ← AQUÍ ESTÁ EL CAMBIO
-            status: 'pending' // ← Agregar el campo status que existe en tu tabla
+            additions_info: data.additionalInfo ? data.additionalInfo.trim() : null, // ← NOMBRE CORRECTO
+            status: 'pending'
         };
 
         console.log('Datos preparados para Neon:', JSON.stringify(datosTabla, null, 2));
 
-        // URL CORREGIDA - incluyendo /neondb/
+        // URL de Neon
         const neonUrl = 'https://ep-frosty-unit-a42qx3oz.apirest.us-east-1.aws.neon.tech/neondb/rest/v1/tabla_contacto';
         console.log('Enviando a:', neonUrl);
 
