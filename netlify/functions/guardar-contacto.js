@@ -87,9 +87,10 @@ exports.handler = async (event) => {
 
         console.log('Datos preparados para Neon:', JSON.stringify(datosTabla, null, 2));
 
-        // URL de Neon REST API - verifica que esta URL sea correcta
-        const neonUrl = 'https://ep-frosty-unit-a42qx3oz.apirest.us-east-1.aws.neon.tech/rest/v1/tabla_contacto';
+        // URL CORREGIDA - incluyendo /neondb/
+        const neonUrl = 'https://ep-frosty-unit-a42qx3oz.apirest.us-east-1.aws.neon.tech/neondb/rest/v1/tabla_contacto';
         console.log('Enviando a:', neonUrl);
+        console.log('API Key length:', process.env.NEON_API_KEY ? process.env.NEON_API_KEY.length : 0);
 
         // Enviar a Neon REST API
         const neonResponse = await fetch(neonUrl, {
@@ -104,7 +105,7 @@ exports.handler = async (event) => {
         });
 
         console.log('Status de respuesta Neon:', neonResponse.status);
-        console.log('Headers de respuesta:', JSON.stringify(neonResponse.headers, null, 2));
+        console.log('Status Text:', neonResponse.statusText);
 
         if (!neonResponse.ok) {
             const errorTexto = await neonResponse.text();
@@ -143,11 +144,7 @@ exports.handler = async (event) => {
     } catch (error) {
         console.error('Error completo en la función:', {
             message: error.message,
-            stack: error.stack,
-            environment: {
-                hasNeonApiKey: !!process.env.NEON_API_KEY,
-                neonApiKeyLength: process.env.NEON_API_KEY ? process.env.NEON_API_KEY.length : 0
-            }
+            stack: error.stack
         });
 
         return {
