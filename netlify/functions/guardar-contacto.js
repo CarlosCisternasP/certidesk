@@ -74,19 +74,19 @@ exports.handler = async (event) => {
             };
         }
 
-        // Preparar datos para tabla_contacto - VERIFICANDO LONGITUDES MÁXIMAS
+        // Preparar datos para tabla_contacto - CON LÍMITES EXACTOS según tu tabla
         const datosTabla = {
             company_name: data.companyName.trim().substring(0, 255),
-            company_rut: data.companyRut.trim().substring(0, 20),
-            employee_count: data.employeeCount,
-            industry: data.industry,
+            company_rut: data.companyRut.trim().substring(0, 28), // ← 28 caracteres máximo
+            employee_count: (data.employeeCount || '').substring(0, 58), // ← 58 caracteres máximo
+            industry: (data.industry || '').substring(0, 188), // ← 188 caracteres máximo
             contact_name: data.contactName.trim().substring(0, 255),
             contact_phone: data.contactPhone.trim().substring(0, 50),
             contact_email: data.contactEmail.trim().toLowerCase().substring(0, 255),
-            current_system: data.currentSystem || null,
+            current_system: data.currentSystem ? data.currentSystem.substring(0, 188) : null, // ← 188 caracteres máximo
             needs: data.needs.trim(),
             additions_info: data.additionalInfo ? data.additionalInfo.trim() : null,
-            status: 'pending'
+            status: 'pending'.substring(0, 29) // ← 29 caracteres máximo
         };
 
         console.log('📦 Datos preparados para Neon:', JSON.stringify(datosTabla, null, 2));
@@ -94,7 +94,7 @@ exports.handler = async (event) => {
         // Verificar longitudes
         console.log('📏 Longitudes de campos:');
         Object.keys(datosTabla).forEach(key => {
-            if (datosTabla[key]) {
+            if (datosTabla[key] !== null && datosTabla[key] !== undefined) {
                 console.log(`  ${key}: ${datosTabla[key].length} caracteres`);
             }
         });
@@ -132,7 +132,13 @@ exports.handler = async (event) => {
             let mensajeError = `Error ${neonResponse.status}: ${neonResponse.statusText}`;
             
             if (neonResponse.status === 400) {
-                mensajeError = 'Error en los datos enviados. Verifica que todos los campos sean válidos.';
+                // Mostrar el error específico de Neon si está disponible
+                try {
+                    const errorJson = JSON.parse(responseText);
+                    mensajeError = `Error en los datos: ${errorJson.message || responseText}`;
+                } catch (e) {
+                    mensajeError = 'Error en los datos enviados. Verifica que todos los campos sean válidos.';
+                }
             } else if (neonResponse.status === 401) {
                 mensajeError = 'Error de autenticación con la base de datos';
             } else if (neonResponse.status === 404) {
