@@ -6,7 +6,6 @@
     <title>CERTIDESK - Plataforma de Gestión Documental Inteligente</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Variables de colores - Paleta original inspirada */
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
@@ -24,15 +23,18 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --border-radius: 12px;
+            --border-radius: 16px;
         }
 
-        /* Reset y estilos base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -440,6 +442,179 @@
             color: var(--gray);
         }
 
+        /* Pricing Section */
+        .pricing {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--light-gray);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 40px -10px rgba(0, 0, 0, 0.15);
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 0 0 0 12px;
+        }
+
+        .plan-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .price-period {
+            color: var(--gray);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 2.5rem;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .features-list li i {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        .feature-included i {
+            background: var(--accent);
+            color: white;
+        }
+
+        .feature-excluded i {
+            background: var(--light-gray);
+            color: var(--gray);
+        }
+
+        .feature-excluded {
+            color: var(--gray);
+            text-decoration: line-through;
+        }
+
+        .comparison-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 4rem;
+        }
+
+        .comparison-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--dark);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .comparison-table th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .comparison-table .feature-name {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .comparison-table .check {
+            color: var(--accent);
+            font-size: 1.25rem;
+        }
+
+        .comparison-table .cross {
+            color: var(--gray);
+            font-size: 1.25rem;
+        }
+
         /* CTA Section */
         .cta {
             background: var(--gradient-primary);
@@ -496,6 +671,138 @@
 
         .cta .btn:hover {
             background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--dark);
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-footer {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .form-note {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-top: 1rem;
         }
 
         /* Footer */
@@ -581,17 +888,25 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .hero-content {
+            .hero-content,
+            .footer-content {
                 grid-template-columns: 1fr;
-                gap: 3rem;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .pricing-card.popular {
+                transform: scale(1);
+            }
+            
+            .pricing-card.popular:hover {
+                transform: translateY(-10px);
             }
             
             .hero-text h1 {
                 font-size: 3rem;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
             }
         }
 
@@ -624,6 +939,28 @@
             .footer-content {
                 grid-template-columns: 1fr;
             }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-section {
+                padding: 2rem 1rem;
+                overflow-x: auto;
+            }
+            
+            .comparison-table {
+                min-width: 800px;
+            }
+            
+            .modal-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -637,6 +974,10 @@
             
             .card-grid {
                 grid-template-columns: 1fr 1fr;
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -654,10 +995,9 @@
                 </a>
                 <ul class="nav-links">
                     <li><a href="#features">Características</a></li>
-                    <li><a href="#soluciones">Soluciones</a></li>
-                    <li><a href="#precios">Precios</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
-                    <li><a href="#" class="btn btn-primary">Comenzar Gratis</a></li>
+                    <li><a href="#pricing">Precios</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                    <li><a href="#" class="btn btn-primary start-trial-btn">Comenzar Gratis</a></li>
                 </ul>
                 <div class="mobile-menu">
                     <i class="fas fa-bars"></i>
@@ -674,13 +1014,13 @@
                     <h1>Gestión Documental <span>Inteligente</span> para Empresas Modernas</h1>
                     <p>CERTIDESK revoluciona cómo las empresas gestionan certificados y documentos. Ofrece a tus clientes acceso seguro 24/7 mientras optimizas tus operaciones.</p>
                     <div class="hero-buttons">
-                        <a href="#" class="btn btn-primary">
+                        <a href="#" class="btn btn-primary start-trial-btn">
                             <i class="fas fa-rocket"></i>
                             Comenzar Ahora
                         </a>
-                        <a href="#" class="btn btn-secondary">
+                        <a href="#features" class="btn btn-secondary">
                             <i class="fas fa-play-circle"></i>
-                            Ver Demo
+                            Ver Características
                         </a>
                     </div>
                 </div>
@@ -774,22 +1114,298 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- Pricing Section -->
+    <section id="pricing" class="section pricing">
+        <div class="container">
+            <div class="pricing-header">
+                <h2 class="section-title">Planes que se Adaptan a tu Empresa</h2>
+                <p class="section-subtitle mx-auto">Elige el plan perfecto para tus necesidades. Todos incluyen prueba gratuita de 30 días.</p>
+            </div>
+
+            <!-- Trial Banner -->
+            <div class="cta" style="margin-bottom: 4rem; border-radius: var(--border-radius);">
+                <div class="cta-content">
+                    <h2 class="section-title">🚀 Comienza tu Prueba Gratuita</h2>
+                    <p class="section-subtitle mx-auto">30 días completos para explorar todas las funcionalidades sin compromiso</p>
+                    <a href="#" class="btn start-trial-btn">
+                        <i class="fas fa-rocket"></i>
+                        Comenzar Prueba Gratuita
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pricing Grid -->
+            <div class="pricing-grid">
+                <!-- Plan Basic -->
+                <div class="pricing-card">
+                    <div class="plan-header">
+                        <div class="plan-name">Basic</div>
+                        <div class="plan-description">Perfecto para pequeñas empresas</div>
+                        <div class="price">$99<span class="price-period">/mes</span></div>
+                    </div>
+                    <ul class="features-list">
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>10 cuentas de cliente</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>5GB almacenamiento</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>Soporte por correo</span>
+                        </li>
+                        <li class="feature-excluded">
+                            <i class="fas fa-times"></i>
+                            <span>Reportes avanzados</span>
+                        </li>
+                        <li class="feature-excluded">
+                            <i class="fas fa-times"></i>
+                            <span>Usuarios administradores</span>
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline start-trial-btn" style="width: 100%;">
+                        <i class="fas fa-shopping-cart"></i>
+                        Elegir Plan
+                    </button>
+                </div>
+
+                <!-- Plan Standard -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">MÁS POPULAR</div>
+                    <div class="plan-header">
+                        <div class="plan-name">Standard</div>
+                        <div class="plan-description">Ideal para empresas en crecimiento</div>
+                        <div class="price">$199<span class="price-period">/mes</span></div>
+                    </div>
+                    <ul class="features-list">
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>25 cuentas de cliente</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>25GB almacenamiento</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>Soporte prioritario</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>Reportes básicos</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>1 usuario administrador</span>
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary start-trial-btn" style="width: 100%;">
+                        <i class="fas fa-star"></i>
+                        Elegir Plan
+                    </button>
+                </div>
+
+                <!-- Plan Professional -->
+                <div class="pricing-card">
+                    <div class="plan-header">
+                        <div class="plan-name">Professional</div>
+                        <div class="plan-description">Para empresas establecidas</div>
+                        <div class="price">$399<span class="price-period">/mes</span></div>
+                    </div>
+                    <ul class="features-list">
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>100 cuentas de cliente</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>150GB almacenamiento</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>Soporte prioritario y telefónico</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>Reportes y logs de acceso</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>1 admin + 3 usuarios pro</span>
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline start-trial-btn" style="width: 100%;">
+                        <i class="fas fa-shopping-cart"></i>
+                        Elegir Plan
+                    </button>
+                </div>
+
+                <!-- Plan Enterprise -->
+                <div class="pricing-card">
+                    <div class="plan-header">
+                        <div class="plan-name">Enterprise</div>
+                        <div class="plan-description">Para grandes organizaciones</div>
+                        <div class="price">$599<span class="price-period">/mes</span></div>
+                    </div>
+                    <ul class="features-list">
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>300 cuentas de cliente</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>500GB almacenamiento</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>Soporte prioritario y telefónico</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>Todo lo del Professional +</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>Funcionalidades avanzadas</span>
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline start-trial-btn" style="width: 100%;">
+                        <i class="fas fa-shopping-cart"></i>
+                        Elegir Plan
+                    </button>
+                </div>
+
+                <!-- Plan Full Premium -->
+                <div class="pricing-card">
+                    <div class="plan-header">
+                        <div class="plan-name">Full Premium</div>
+                        <div class="plan-description">Máxima capacidad y soporte</div>
+                        <div class="price">$899<span class="price-period">/mes</span></div>
+                    </div>
+                    <ul class="features-list">
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>1000 cuentas de cliente</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>1TB almacenamiento</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>Soporte 24/7 línea directa</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>Onboarding personalizado</span>
+                        </li>
+                        <li class="feature-included">
+                            <i class="fas fa-check"></i>
+                            <span>50 cuentas multi roles</span>
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline start-trial-btn" style="width: 100%;">
+                        <i class="fas fa-crown"></i>
+                        Elegir Plan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="comparison-section">
+                <h2>Comparación Completa de Planes</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th class="feature-name">Característica</th>
+                            <th>Basic</th>
+                            <th>Standard</th>
+                            <th>Professional</th>
+                            <th>Enterprise</th>
+                            <th>Full Premium</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-name">Cuentas de cliente</td>
+                            <td>10</td>
+                            <td>25</td>
+                            <td>100</td>
+                            <td>300</td>
+                            <td>1000</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Almacenamiento</td>
+                            <td>5GB</td>
+                            <td>25GB</td>
+                            <td>150GB</td>
+                            <td>500GB</td>
+                            <td>1TB</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Soporte</td>
+                            <td>Correo</td>
+                            <td>Prioritario</td>
+                            <td>Telefónico</td>
+                            <td>Telefónico</td>
+                            <td>24/7 Directo</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Reportes</td>
+                            <td class="cross">❌</td>
+                            <td class="check">✅</td>
+                            <td class="check">✅</td>
+                            <td class="check">✅</td>
+                            <td class="check">✅</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Logs de acceso</td>
+                            <td class="cross">❌</td>
+                            <td class="cross">❌</td>
+                            <td class="check">✅</td>
+                            <td class="check">✅</td>
+                            <td class="check">✅</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Usuarios admin</td>
+                            <td class="cross">❌</td>
+                            <td>1</td>
+                            <td>1 + 3 pro</td>
+                            <td>Personalizado</td>
+                            <td>50 multi-rol</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Onboarding</td>
+                            <td class="cross">❌</td>
+                            <td class="cross">❌</td>
+                            <td class="cross">❌</td>
+                            <td class="cross">❌</td>
+                            <td class="check">✅</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
     <section class="section cta">
         <div class="container">
             <div class="cta-content">
                 <h2 class="section-title">¿Listo para Transformar tu Gestión Documental?</h2>
                 <p class="section-subtitle mx-auto">Únete a cientos de empresas que ya confían en CERTIDESK para optimizar sus procesos y mejorar el servicio al cliente.</p>
-                <a href="#" class="btn">
+                <a href="#" class="btn start-trial-btn">
                     <i class="fas fa-calendar-check"></i>
-                    Agendar Demo Personalizada
+                    Comenzar Prueba Gratuita
                 </a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
@@ -811,10 +1427,10 @@
                 <div class="footer-column">
                     <h3>Producto</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Características</a></li>
-                        <li><a href="#">Soluciones</a></li>
-                        <li><a href="#">Precios</a></li>
-                        <li><a href="#">Demo</a></li>
+                        <li><a href="#features">Características</a></li>
+                        <li><a href="#pricing">Precios</a></li>
+                        <li><a href="#pricing">Prueba Gratuita</a></li>
+                        <li><a href="#contact">Demo</a></li>
                     </ul>
                 </div>
                 
@@ -833,7 +1449,7 @@
                     <ul class="footer-links">
                         <li><a href="#">Nosotros</a></li>
                         <li><a href="#">Carreras</a></li>
-                        <li><a href="#">Contacto</a></li>
+                        <li><a href="mailto:contacto@certidesk.com">Contacto</a></li>
                         <li><a href="#">Soporte</a></li>
                     </ul>
                 </div>
@@ -845,41 +1461,231 @@
         </div>
     </footer>
 
+    <!-- Modal Form -->
+    <div class="modal" id="trialModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2 class="modal-title">Comienza tu Prueba Gratuita</h2>
+                <p class="modal-subtitle">30 días completos para explorar CERTIDESK sin compromiso</p>
+            </div>
+
+            <form id="trialForm">
+                <div class="form-group">
+                    <label class="form-label" for="companyName">Nombre de la Empresa *</label>
+                    <input type="text" class="form-control" id="companyName" name="companyName" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="companyRut">RUT Empresa *</label>
+                        <input type="text" class="form-control" id="companyRut" name="companyRut" placeholder="12.345.678-9" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="employeeCount">N° de Empleados *</label>
+                        <select class="form-control form-select" id="employeeCount" name="employeeCount" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="1-5">1-5 empleados</option>
+                            <option value="6-10">6-10 empleados</option>
+                            <option value="11-20">11-20 empleados</option>
+                            <option value="21-50">21-50 empleados</option>
+                            <option value="51-100">51-100 empleados</option>
+                            <option value="101-500">101-500 empleados</option>
+                            <option value="500+">Más de 500 empleados</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="industry">Giro de la Empresa *</label>
+                    <select class="form-control form-select" id="industry" name="industry" required>
+                        <option value="">Seleccionar giro...</option>
+                        <option value="consultoria">Consultoría</option>
+                        <option value="construccion">Construcción</option>
+                        <option value="manufactura">Manufactura</option>
+                        <option value="tecnologia">Tecnología</option>
+                        <option value="salud">Salud</option>
+                        <option value="educacion">Educación</option>
+                        <option value="finanzas">Finanzas</option>
+                        <option value="retail">Retail</option>
+                        <option value="logistica">Logística</option>
+                        <option value="energia">Energía</option>
+                        <option value="mineria">Minería</option>
+                        <option value="agricultura">Agricultura</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="contactName">Nombre de Contacto *</label>
+                        <input type="text" class="form-control" id="contactName" name="contactName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="contactPhone">Teléfono *</label>
+                        <input type="tel" class="form-control" id="contactPhone" name="contactPhone" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="contactEmail">Correo Electrónico *</label>
+                    <input type="email" class="form-control" id="contactEmail" name="contactEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="currentSystem">¿Qué sistema usa actualmente para gestión documental?</label>
+                    <select class="form-control form-select" id="currentSystem" name="currentSystem">
+                        <option value="">Seleccionar...</option>
+                        <option value="ninguno">Ninguno / Manual</option>
+                        <option value="sharepoint">SharePoint</option>
+                        <option value="google-drive">Google Drive</option>
+                        <option value="dropbox">Dropbox</option>
+                        <option value="onedrive">OneDrive</option>
+                        <option value="sistema-propio">Sistema propio</option>
+                        <option value="otro">Otro sistema</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="needs">Cuéntenos su necesidad específica *</label>
+                    <textarea class="form-control" id="needs" name="needs" placeholder="Describa qué problemas espera resolver con CERTIDESK, qué tipo de documentos maneja, cuántos clientes necesita gestionar, etc." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="additionalInfo">¿Hay algo más que debamos saber?</label>
+                    <textarea class="form-control" id="additionalInfo" name="additionalInfo" placeholder="Plazos específicos, integraciones necesarias, requerimientos especiales de seguridad, etc."></textarea>
+                </div>
+
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar Solicitud de Prueba
+                    </button>
+                    <p class="form-note">
+                        * Campos obligatorios. Nos contactaremos dentro de 24 horas para activar tu prueba.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Menú móvil
+        // Modal functionality
+        const modal = document.getElementById('trialModal');
+        const modalClose = document.getElementById('modalClose');
+        const startTrialBtns = document.querySelectorAll('.start-trial-btn');
+        const trialForm = document.getElementById('trialForm');
+
+        // Open modal
+        startTrialBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close modal
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Form submission
+        trialForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Basic form validation
+            const requiredFields = trialForm.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#e53e3e';
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+
+            if (isValid) {
+                // Here you would typically send the form data to your server
+                const formData = new FormData(trialForm);
+                const data = Object.fromEntries(formData);
+                
+                console.log('Form data:', data);
+                
+                // Show success message
+                alert('¡Gracias por tu solicitud! Nos contactaremos dentro de 24 horas para activar tu prueba gratuita.');
+                
+                // Close modal and reset form
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                trialForm.reset();
+                
+                // Here you would typically send the data to your backend
+                // fetch('/api/trial-request', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(data)
+                // });
+            } else {
+                alert('Por favor, completa todos los campos obligatorios.');
+            }
+        });
+
+        // Mobile Menu Toggle
         document.querySelector('.mobile-menu').addEventListener('click', function() {
             const navLinks = document.querySelector('.nav-links');
             navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
         });
 
-        // Smooth scroll para enlaces internos
+        // Smooth scroll for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Cerrar menú móvil si está abierto
-                    if(window.innerWidth <= 768) {
-                        document.querySelector('.nav-links').style.display = 'none';
+            anchor.addEventListener('click', function (e) {
+                if (!this.classList.contains('start-trial-btn')) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        
+                        // Close mobile menu if open
+                        if (window.innerWidth <= 768) {
+                            document.querySelector('.nav-links').style.display = 'none';
+                        }
                     }
                 }
             });
         });
 
-        // Efecto de partículas en el hero (simulado con CSS)
-        // Header con blur al hacer scroll
+        // Header background on scroll
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
-            if(window.scrollY > 50) {
+            if (window.scrollY > 50) {
                 header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
                 header.style.backdropFilter = 'blur(10px)';
             } else {
@@ -888,28 +1694,52 @@
             }
         });
 
-        // Animación de aparición para las tarjetas de características
+        // Animation on scroll for elements
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+            entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
                 }
             });
         }, observerOptions);
 
-        // Aplicar a las tarjetas de características
-        document.querySelectorAll('.feature-card').forEach(card => {
+        // Observe feature cards and pricing cards
+        document.querySelectorAll('.feature-card, .pricing-card').forEach(card => {
             card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
+            card.style.transform = 'translateY(30px)';
             card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(card);
         });
+
+        // RUT formatting
+        const rutInput = document.getElementById('companyRut');
+        if (rutInput) {
+            rutInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\./g, '').replace('-', '');
+                
+                if (value.length > 1) {
+                    value = value.slice(0, -1) + '-' + value.slice(-1);
+                }
+                
+                if (value.length > 4) {
+                    value = value.slice(0, -4) + '.' + value.slice(-4);
+                }
+                
+                if (value.length > 8) {
+                    value = value.slice(0, -8) + '.' + value.slice(-8);
+                }
+                
+                e.target.value = value;
+            });
+        }
     </script>
 </body>
 </html>
