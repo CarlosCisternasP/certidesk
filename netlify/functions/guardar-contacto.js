@@ -93,41 +93,15 @@ exports.handler = async (event, context) => {
       const insertedId = result.rows[0].id;
       console.log('✅ Datos insertados correctamente. ID:', insertedId);
 
-      // 🔔 LLAMAR A LA FUNCIÓN DE NOTIFICACIÓN
+      // 🔔 ENVIAR NOTIFICACIÓN DIRECTAMENTE
       try {
-        console.log('🔔 Enviando notificación...');
-        
-       const siteUrl = process.env.URL || 'https://www.certidesk.cl';
-        const notificationResponse = await fetch(
-          `https://${siteUrl}/.netlify/functions/notify-new-contact`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              ...data,
-              recordId: insertedId
-            })
-          }
-        );
-
-        if (!notificationResponse.ok) {
-          throw new Error(`HTTP error! status: ${notificationResponse.status}`);
-        }
-
-        const notificationResult = await notificationResponse.json();
-        
-        if (notificationResult.success) {
-          console.log('✅ Notificación enviada correctamente');
-        } else {
-          console.log('⚠️ Notificación falló pero datos guardados:', notificationResult.message);
-        }
-        
+        console.log('🔔 Enviando notificación directamente...');
+        await sendNotificationDirectly(data, insertedId);
+        console.log('✅ Notificación enviada correctamente');
       } catch (notificationError) {
-        console.log('⚠️ Error llamando a notificación, pero datos guardados:', notificationError.message);
+        console.log('⚠️ Error en notificación, pero datos guardados:', notificationError.message);
       }
-      // 🔔 FIN DE LLAMADA A NOTIFICACIÓN
+      // 🔔 FIN DE NOTIFICACIÓN DIRECTA
       
       return {
         statusCode: 200,
@@ -162,3 +136,113 @@ exports.handler = async (event, context) => {
   }
 };
 
+// FUNCIÓN PARA ENVIAR NOTIFICACIÓN DIRECTAMENTE
+async function sendNotificationDirectly(formData, recordId) {
+  try {
+    const sgMail = require('@sendgrid/mail');
+    
+    console.log('🔍 Verificando variables SendGrid:');
+    console.log('   - SENDGRID_API_KEY:', process.env.SENDGRID_API_KEY ? '✅ Configurada' : '❌ NO configurada');
+    console.log('   - FROM_EMAIL:', process.env.FROM_EMAIL || '❌ NO configurada');
+    console.log('   - TO_EMAIL:', process.env.TO_EMAIL || '❌ NO configurada');
+    
+    if (!process.env.SENDGRID_API_KEY) {
+      throw new Error('SendGrid API Key no configurada');
+    }
+    
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+    const msg = {
+      to: process.env.TO_EMAIL,
+      from: process.env.FROM_EMAIL,
+      subject: `🆕 Nuevo Contacto - ${formData.companyName || formData.contactName}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0; }
+                .content { background: #f0fdf4; padding: 20px; border-radius: 0 0 10px 10px; border: 2px solid #10b981; }
+                .field { margin-bottom: 12px; padding: 10px; background: white; border-radius: 5px; border-left: 4px solid #10b981; }
+                .label { font-weight: bold; color: #059669; font-size: 14px; }
+                .value { color: #1e293b; }
+                .alert { background: #fef3c7; padding: 15px; border-radius: 5px; margin: 15px 0; text-align: center; border: 1px solid #f59e0b; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>🆕 Nuevo Contacto Registrado</h1>
+                    <p>CERTIDESK - Plataforma de Gestión Documental</p>
+                </div>
+                <div class="content">
+                    <div class="alert">
+                        <strong>🚀 ¡Nueva solicitud de prueba gratuita!</strong>
+                    </div>
+                    
+                    <div class="field">
+                        <div class="label">🏢 Empresa</div>
+                        <div class="value">${formData.companyName || 'No especificada'}</div>
+                    </div>
+                    
+                    <div class="field">
+                        <div class="label">📋 RUT</div>
+                        <div class="value">${formData.companyRut || 'No especificado'}</div>
+                    </div>
+                    
+                    <div class="field">
+                        <div class="label">👤 Contacto Principal</div>
+                        <div class="value">
+                            <strong>Nombre:</strong> ${formData.contactName}<br>
+                            <strong>Email:</strong> ${formData.contactEmail}<br>
+                            <strong>Teléfono:</strong> ${formData.contactPhone || 'No especificado'}
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <div class="label">🏭 Giro / Industria</div>
+                        <div class="value">${formData.industry || 'No especificado'}</div>
+                    </div>
+                    
+                    <div class="field">
+                        <div class="label">💻 Sistema Actual</div>
+                        <div class="value">${formData.currentSystem || 'No especificado'}</div>
+                    </div>
+                    
+                    <div class="field">
+                        <div class="label">🎯 Necesidad Principal</div>
+                        <div class="value">${formData.needs || 'No especificada'}</div>
+                    </div>
+                    
+                    ${formData.additionalInfo ? `
+                    <div class="field">
+                        <div class="label">📝 Información Adicional</div>
+                        <div class="value">${formData.additionalInfo}</div>
+                    </div>
+                    ` : ''}
+                    
+                    <div style="background: #dbeafe; padding: 15px; border-radius: 5px; margin-top: 20px; text-align: center;">
+                        <strong>📞 Acción Requerida:</strong> Contactar dentro de 24 horas
+                    </div>
+                    
+                    <div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 20px;">
+                        📅 ${new Date().toLocaleString('es-CL')} | ID: #${recordId}
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+      `
+    };
+
+    await sgMail.send(msg);
+    console.log('✅ Email de notificación enviado directamente');
+    return true;
+    
+  } catch (error) {
+    console.error('❌ Error enviando notificación:', error);
+    throw error;
+  }
+}
