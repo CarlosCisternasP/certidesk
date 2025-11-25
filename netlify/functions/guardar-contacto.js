@@ -1,4 +1,3 @@
-// netlify/functions/guardar-contacto.js
 const { Pool } = require('pg');
 
 exports.handler = async (event, context) => {
@@ -25,7 +24,7 @@ exports.handler = async (event, context) => {
       }
     }
 
-    // Configurar conexión a PostgreSQL usando variables de entorno de Netlify
+    // Configurar conexión a PostgreSQL
     const pool = new Pool({
       connectionString: process.env.DATABASE_URL,
       ssl: {
@@ -33,8 +32,26 @@ exports.handler = async (event, context) => {
       }
     });
 
+    // Crear la tabla si no existe
+    const createTableQuery = `
+      CREATE TABLE IF NOT EXISTS tabla_contacto (
+        id SERIAL PRIMARY KEY,
+        nombre_empresa VARCHAR(255) NOT NULL,
+        rut_empresa VARCHAR(20) NOT NULL,
+        cantidad_empleados VARCHAR(50),
+        giro_empresa VARCHAR(100),
+        nombre_contacto VARCHAR(255) NOT NULL,
+        telefono_contacto VARCHAR(50) NOT NULL,
+        email_contacto VARCHAR(255) NOT NULL,
+        sistema_actual VARCHAR(100),
+        necesidades TEXT NOT NULL,
+        informacion_adicional TEXT,
+        fecha_creacion TIMESTAMP DEFAULT NOW()
+      );
+    `;
+
     // Insertar en la base de datos
-    const query = `
+    const insertQuery = `
       INSERT INTO tabla_contacto (
         nombre_empresa, 
         rut_empresa, 
@@ -45,9 +62,8 @@ exports.handler = async (event, context) => {
         email_contacto, 
         sistema_actual, 
         necesidades, 
-        informacion_adicional,
-        fecha_creacion
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW())
+        informacion_adicional
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING id
     `;
 
@@ -67,7 +83,11 @@ exports.handler = async (event, context) => {
     const client = await pool.connect();
     
     try {
-      const result = await client.query(query, values);
+      // Crear tabla si no existe
+      await client.query(createTableQuery);
+      
+      // Insertar datos
+      const result = await client.query(insertQuery, values);
       
       return {
         statusCode: 200,
