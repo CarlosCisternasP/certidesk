@@ -90,14 +90,51 @@ exports.handler = async (event, context) => {
         ]
       );
 
-      console.log('✅ Datos insertados correctamente. ID:', result.rows[0].id);
+      const insertedId = result.rows[0].id;
+      console.log('✅ Datos insertados correctamente. ID:', insertedId);
+
+      // 🔔 LLAMAR A LA FUNCIÓN DE NOTIFICACIÓN
+      try {
+        console.log('🔔 Enviando notificación...');
+        
+        const siteUrl = process.env.URL || 'certidesk.netlify.app';
+        const notificationResponse = await fetch(
+          `https://${siteUrl}/.netlify/functions/notify-new-contact`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              ...data,
+              recordId: insertedId
+            })
+          }
+        );
+
+        if (!notificationResponse.ok) {
+          throw new Error(`HTTP error! status: ${notificationResponse.status}`);
+        }
+
+        const notificationResult = await notificationResponse.json();
+        
+        if (notificationResult.success) {
+          console.log('✅ Notificación enviada correctamente');
+        } else {
+          console.log('⚠️ Notificación falló pero datos guardados:', notificationResult.message);
+        }
+        
+      } catch (notificationError) {
+        console.log('⚠️ Error llamando a notificación, pero datos guardados:', notificationError.message);
+      }
+      // 🔔 FIN DE LLAMADA A NOTIFICACIÓN
       
       return {
         statusCode: 200,
         body: JSON.stringify({ 
           success: true, 
-          message: 'Solicitud guardada correctamente',
-          id: result.rows[0].id
+          message: '¡Solicitud enviada correctamente! Nos contactaremos dentro de 24 horas.',
+          id: insertedId
         })
       };
 
