@@ -97,7 +97,7 @@ exports.handler = async (event, context) => {
       try {
         console.log('🔔 Enviando notificación...');
         
-        const siteUrl = process.env.URL || 'certidesk.netlify.app';
+       const siteUrl = process.env.URL || 'https://www.certidesk.cl';
         const notificationResponse = await fetch(
           `https://${siteUrl}/.netlify/functions/notify-new-contact`,
           {
@@ -161,3 +161,4 @@ exports.handler = async (event, context) => {
     };
   }
 };
+
