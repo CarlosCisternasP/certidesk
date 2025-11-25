@@ -2,6 +2,11 @@ const sgMail = require('@sendgrid/mail');
 
 exports.handler = async (event, context) => {
   console.log('🔔 Función de notificación ejecutada');
+  // Al inicio de la función, después de console.log('🔔 Función de notificación ejecutada');
+console.log('🔍 Verificando variables de entorno:');
+console.log('   - SENDGRID_API_KEY:', process.env.SENDGRID_API_KEY ? '✅ Configurada' : '❌ NO configurada');
+console.log('   - FROM_EMAIL:', process.env.FROM_EMAIL || '❌ NO configurada');
+console.log('   - TO_EMAIL:', process.env.TO_EMAIL || '❌ NO configurada');
   
   // Verificar método POST
   if (event.httpMethod !== 'POST') {
@@ -140,6 +145,7 @@ exports.handler = async (event, context) => {
       })
     };
   }
+
 
 
 
