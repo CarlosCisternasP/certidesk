@@ -1,10 +1,8 @@
 {
   "name": "certidesk",
   "version": "1.0.0",
-  "description": "Plataforma de Gestión Documental Inteligente",
-  "scripts": {
-    "build": "echo 'No build step required'"
-  },
-  "dependencies": {},
-  "devDependencies": {}
+  "description": "Plataforma de Gestión Documental",
+  "dependencies": {
+    "pg": "^8.11.3"
+  }
 }
