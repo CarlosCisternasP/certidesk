@@ -616,6 +616,127 @@
             font-size: 1.25rem;
         }
 
+        /* ServiceDesk Section */
+        .servicedesk {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        .servicedesk-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .servicedesk-text h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .servicedesk-text h2 span {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .servicedesk-text p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .servicedesk-features {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .servicedesk-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            transition: var(--transition);
+        }
+
+        .servicedesk-feature:hover {
+            background: white;
+            transform: translateX(5px);
+            box-shadow: var(--shadow);
+        }
+
+        .servicedesk-feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .servicedesk-feature-content h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .servicedesk-feature-content p {
+            font-size: 0.95rem;
+            color: var(--gray);
+            margin-bottom: 0;
+        }
+
+        .servicedesk-benefits {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--light-gray);
+        }
+
+        .servicedesk-benefits h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--light);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .benefit-item i {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
         /* CTA Section */
         .cta {
             background: var(--gradient-primary);
@@ -890,7 +1011,8 @@
         /* Responsive */
         @media (max-width: 1024px) {
             .hero-content,
-            .footer-content {
+            .footer-content,
+            .servicedesk-content {
                 grid-template-columns: 1fr;
             }
             
@@ -962,6 +1084,10 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -980,6 +1106,10 @@
             .modal-title {
                 font-size: 1.5rem;
             }
+            
+            .servicedesk-benefits {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -997,8 +1127,9 @@
                 <ul class="nav-links">
                     <li><a href="#features">Características</a></li>
                     <li><a href="#pricing">Precios</a></li>
+                    <li><a href="#servicedesk">ServiceDesk</a></li>
                     <li><a href="#contact">Contacto</a></li>
-                    <li><a href="#" class="btn btn-primary start-trial-btn">Comenzar Gratis</a></li>
+                    <li><a href="https://servicesdesk.cl/" class="btn btn-primary" target="_blank">Soporte y Soluciones</a></li>
                 </ul>
                 <div class="mobile-menu">
                     <i class="fas fa-bars"></i>
@@ -1391,6 +1522,108 @@
         </div>
     </section>
 
+    <!-- ServiceDesk Section -->
+    <section id="servicedesk" class="section servicedesk">
+        <div class="container">
+            <div class="servicedesk-content">
+                <div class="servicedesk-text">
+                    <h2>ServiceDesk — <span>Transformación Digital Inteligente</span> para Empresas Modernas</h2>
+                    <p>ServiceDesk es la solución integral diseñada para empresas que necesitan conectar sus sistemas, automatizar procesos y tomar decisiones basadas en datos reales. Somos especialistas en integrar plataformas empresariales como SAP, Microsoft 365, SharePoint, Power BI y Power Platform, creando entornos unificados y eficientes que impulsan la productividad y eliminan la fricción tecnológica.</p>
+                    
+                    <h3 style="margin-bottom: 1rem; color: var(--dark);">🚀 Lo que ofrecemos</h3>
+                    
+                    <div class="servicedesk-features">
+                        <div class="servicedesk-feature">
+                            <div class="servicedesk-feature-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <div class="servicedesk-feature-content">
+                                <h4>Integración completa de sistemas</h4>
+                                <p>Conectamos SAP, bases de datos, SharePoint, Power BI y aplicaciones internas para lograr una operación fluida y sin silos.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="servicedesk-feature">
+                            <div class="servicedesk-feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="servicedesk-feature-content">
+                                <h4>Automatización de procesos</h4>
+                                <p>Digitalizamos aprobaciones, formularios, flujos operativos y tareas repetitivas para ahorrar tiempo y reducir errores.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="servicedesk-feature">
+                            <div class="servicedesk-feature-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="servicedesk-feature-content">
+                                <h4>Dashboards ejecutivos</h4>
+                                <p>Reportes e indicadores clave en tiempo real que permiten decisiones estratégicas basadas en información confiable.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="servicedesk-feature">
+                            <div class="servicedesk-feature-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="servicedesk-feature-content">
+                                <h4>Desarrollo a medida</h4>
+                                <p>Aplicaciones web, APIs y microservicios creados según la necesidad del negocio. Tu empresa no se adapta al software — el software se adapta a ti.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="servicedesk-feature">
+                            <div class="servicedesk-feature-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="servicedesk-feature-content">
+                                <h4>Infraestructura y seguridad TI</h4>
+                                <p>Soporte profesional en servidores, respaldo, monitoreo, ciberseguridad y continuidad operacional.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="servicedesk-benefits">
+                    <h3>🌟 Beneficios para tu organización</h3>
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Aumenta la productividad y reduce costos operacionales</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-ban"></i>
+                            <span>Elimina procesos manuales y errores humanos</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-eye"></i>
+                            <span>Entrega visibilidad total y trazabilidad</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                            <span>Escalabilidad sin límites</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-hands-helping"></i>
+                            <span>Acompañamiento experto completo</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Control interno y auditoría mejorados</span>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="https://servicesdesk.cl/" class="btn btn-accent" target="_blank">
+                            <i class="fas fa-lightbulb"></i>
+                            Consultar por ServiceDesk
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Final CTA Section -->
     <section class="section cta">
         <div class="container">
@@ -1430,6 +1663,7 @@
                     <ul class="footer-links">
                         <li><a href="#features">Características</a></li>
                         <li><a href="#pricing">Precios</a></li>
+                        <li><a href="#servicedesk">ServiceDesk</a></li>
                         <li><a href="#pricing">Prueba Gratuita</a></li>
                         <li><a href="#contact">Demo</a></li>
                     </ul>
@@ -1574,6 +1808,7 @@
             </form>
         </div>
     </div>
+
 <script>
     // Modal functionality
     const modal = document.getElementById('trialModal');
@@ -1581,7 +1816,7 @@
     const startTrialBtns = document.querySelectorAll('.start-trial-btn');
     const trialForm = document.getElementById('trialForm');
 
-    // Open modal
+    // Open modal - solo para botones con clase start-trial-btn
     startTrialBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -1698,7 +1933,7 @@
     // Smooth scroll for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            if (!this.classList.contains('start-trial-btn')) {
+            if (!this.classList.contains('start-trial-btn') && !this.getAttribute('target')) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
@@ -1746,7 +1981,7 @@
     }, observerOptions);
 
     // Observe feature cards and pricing cards
-    document.querySelectorAll('.feature-card, .pricing-card').forEach(card => {
+    document.querySelectorAll('.feature-card, .pricing-card, .servicedesk-feature').forEach(card => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(30px)';
         card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
