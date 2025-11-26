@@ -6,6 +6,7 @@
     <title>CERTIDESK - Plataforma de Gestión Documental Inteligente</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* [Todo el CSS anterior se mantiene igual] */
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
@@ -1615,6 +1616,14 @@
     trialForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        // Validar RUT antes de enviar
+        const rutInput = document.getElementById('companyRut');
+        if (rutInput.value && !isValidRUT(rutInput.value)) {
+            alert('Por favor ingresa un RUT válido (Ej: 12.345.678-9)');
+            rutInput.focus();
+            return;
+        }
+        
         // Basic form validation
         const requiredFields = trialForm.querySelectorAll('[required]');
         let isValid = true;
@@ -1744,28 +1753,58 @@
         observer.observe(card);
     });
 
-    // RUT formatting
+    // RUT formatting con validación chilena mejorada
     const rutInput = document.getElementById('companyRut');
     if (rutInput) {
         rutInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\./g, '').replace('-', '');
             
-            if (value.length > 1) {
+            // Limitar a máximo 8 dígitos antes del guión (99.999.999)
+            if (value.length > 8) {
+                value = value.substring(0, 8) + '-' + value.slice(8, 9);
+            } else if (value.length > 1) {
                 value = value.slice(0, -1) + '-' + value.slice(-1);
             }
             
-            if (value.length > 4) {
-                value = value.slice(0, -4) + '.' + value.slice(-4);
+            // Agregar puntos
+            if (value.length > 6) { // Después de XX.XXX-X
+                value = value.slice(0, -5) + '.' + value.slice(-5);
             }
             
-            if (value.length > 8) {
-                value = value.slice(0, -8) + '.' + value.slice(-8);
+            if (value.length > 10) { // Después de XX.XXX.XXX-X
+                value = value.slice(0, -9) + '.' + value.slice(-9);
             }
             
             e.target.value = value;
         });
+
+        // Validación básica de formato
+        rutInput.addEventListener('blur', function(e) {
+            const value = e.target.value.trim();
+            if (value && !/^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/.test(value)) {
+                alert('Por favor ingresa un RUT en formato válido: 12.345.678-9');
+                e.target.focus();
+            }
+        });
+    }
+
+    // Función para validar RUT chileno
+    function isValidRUT(rut) {
+        // Patrón: 1-2 dígitos . 3 dígitos . 3 dígitos - 1 dígito o K
+        const rutPattern = /^(\d{1,2}\.\d{3}\.\d{3}-[\dkK])$/;
+        
+        if (!rutPattern.test(rut)) {
+            return false;
+        }
+
+        // Validar que el primer número no supere 99
+        const firstPart = rut.split('.')[0];
+        if (parseInt(firstPart) > 99) {
+            return false;
+        }
+
+        return true;
     }
 </script>
 </body>
 </html>
-
